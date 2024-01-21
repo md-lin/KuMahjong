@@ -1,3 +1,4 @@
+import { connectMongo, connectedToMongo } from "./database";
 import Server from "./rest/Server";
 
 /**
@@ -10,6 +11,7 @@ export class App {
 		const server = new Server(port);
 		return server.start().then(() => {
 			console.info("App::initServer() - started");
+			connectMongo(() => { (connectedToMongo()) ? void 0 : void 0; });
 		}).catch((err: Error) => {
 			console.error(`App::initServer() - ERROR: ${err.message}`);
 		});
@@ -22,3 +24,4 @@ const app = new App();
 (async () => {
 	await app.initServer(4321);
 })();
+
