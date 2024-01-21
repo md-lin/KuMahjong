@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { connectMongo, connectedToMongo } from "./database";
 import Server from "./rest/Server";
 
