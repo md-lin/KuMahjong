@@ -24,6 +24,7 @@ export class Get {
 
 	public async handleResult(req: Request, res: Response) {
 		try {
+			res.header("Access-Control-Allow-Origin", "*");
 			const result = {hello: "yer"};
 			res.status(200).json({result: result});
 		} catch (error) {

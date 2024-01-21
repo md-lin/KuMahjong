@@ -35,7 +35,7 @@ export default class Server {
 		this.get = new Get(this.insightFacade, this.gameLogic);
 
 
-		this.registerMiddleware();
+		// this.registerMiddleware();
 		this.registerRoutes();
 
 		// NOTE: you can serve static frontend files in from your express server
@@ -122,7 +122,7 @@ export default class Server {
 		this.express.post("/query", this.post.post.bind(this.post));
 		this.express.get("/datasets", this.get.handleGetDataset.bind(this.get));
 		this.express.delete("/dataset/:id", this.delete.handleDeleteDataset.bind(this.delete));
-		// this.express.options("/", cors());
+		this.express.options("/", cors());
 		this.express.get("/hello", this.get.handleResult.bind(this.get));
 		this.express.get("/discard/:id", this.get.handleDiscard.bind(this.get));
 

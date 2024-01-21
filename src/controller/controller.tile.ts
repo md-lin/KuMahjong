@@ -8,7 +8,7 @@ export async function createTile(tile: {
   id: string;
   visibility?: House;
   hand?: House;
-}): Promise<void> {
+}): Promise<ITile | undefined> {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -23,19 +23,17 @@ export async function createTile(tile: {
   if (result) {
     const data = {
       ...result.toJSON(),
-      _id: undefined,
-      is_deleted: undefined,
     };
 
     await session.commitTransaction();
     await session.endSession();
     console.log("Created tile");
-    return;
+    return data;
   } else {
     await session.abortTransaction();
     await session.endSession();
     console.log("Not created");
-    return;
+    return undefined
   }
 }
 
@@ -43,7 +41,7 @@ export async function updateTile(tile: {
   id: string;
   visibility?: House;
   hand?: House;
-}): Promise<void> {
+}): Promise<ITile | undefined> {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -66,22 +64,21 @@ export async function updateTile(tile: {
   if (updated) {
     const data = {
       ...updated,
-      _id: undefined,
     };
 
     await session.commitTransaction();
     await session.endSession();
     console.log("Created tile");
-    return;
+    return data;
   } else {
     await session.abortTransaction();
     await session.endSession();
     console.log("Not created");
-    return;
+    return undefined;
   }
 }
 
-export async function getAllTiles(hand: { id: string }): Promise<void> {
+export async function getAllTiles(hand: { id: string }): Promise<ITile[] | ITile | undefined> {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -94,13 +91,12 @@ export async function getAllTiles(hand: { id: string }): Promise<void> {
   if (found) {
     const data = {
       ...found,
-      _id: undefined,
     };
 
     await session.commitTransaction();
     await session.endSession();
     console.log("Found");
-    return;
+    return data;
   } else {
     await session.abortTransaction();
     await session.endSession();
@@ -109,7 +105,7 @@ export async function getAllTiles(hand: { id: string }): Promise<void> {
   }
 }
 
-export async function getOneTile(tile: { id: string }): Promise<void> {
+export async function getOneTile(tile: { id: string }): Promise<ITile | undefined> {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -122,17 +118,14 @@ export async function getOneTile(tile: { id: string }): Promise<void> {
   if (found) {
     const data = {
       ...found,
-      _id: undefined,
     };
 
     await session.commitTransaction();
     await session.endSession();
-    console.log("Found");
-    return;
+    return data;
   } else {
     await session.abortTransaction();
     await session.endSession();
-    console.log("Not found");
-    return;
+    return undefined;
   }
 }
