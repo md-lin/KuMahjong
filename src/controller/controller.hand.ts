@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Hand, { House } from "../models/hand";
+import Hand, { House, IHand } from "../models/hand";
 
 export async function createHand (
     hand: {
@@ -7,7 +7,7 @@ export async function createHand (
         id: string,
         house: House
     }
-): Promise<void> {
+): Promise<IHand | undefined> {
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -20,18 +20,16 @@ export async function createHand (
     if (result) {
         const data = {
             ...result.toJSON(),
-            _id: undefined,
-            is_deleted: undefined
         }
 
         await session.commitTransaction();
         await session.endSession();
         console.log("Created")
-        return;
+        return data
     } else {
         await session.abortTransaction();
         await session.endSession();
         console.log("Not created")
-        return;
+        return undefined;
     }
 }

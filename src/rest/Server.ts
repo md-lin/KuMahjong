@@ -1,5 +1,5 @@
 import express, {Application, Request, Response} from "express";
-import cors from "cors";
+// import cors from "cors";
 import * as http from "http";
 import {Echo} from "./Echo";
 import {Post} from "./Post";
@@ -8,6 +8,7 @@ import InsightFacade from "../../src/controller/InsightFacade";
 import {Delete} from "./Delete";
 import {Get} from "./Get";
 // import cors from "cors";
+import {GameLogic} from "../controller/gameLogic";
 
 export default class Server {
 	private readonly port: number;
@@ -18,6 +19,7 @@ export default class Server {
 	private post: Post;
 	private delete: Delete;
 	private get: Get;
+	private gameLogic: GameLogic;
 
 	constructor(port: number) {
 		console.info(`Server::<init>( ${port} )`);
@@ -27,7 +29,10 @@ export default class Server {
 		this.put = new Put(this.insightFacade);
 		this.post = new Post(this.insightFacade);
 		this.delete = new Delete(this.insightFacade);
-		this.get = new Get(this.insightFacade);
+
+		// CHANGED LINES
+		this.gameLogic = new GameLogic(["0", "1", "2", "3"]);
+		this.get = new Get(this.insightFacade, this.gameLogic);
 
 
 		// this.registerMiddleware();
@@ -117,7 +122,7 @@ export default class Server {
 		this.express.post("/query", this.post.post.bind(this.post));
 		this.express.get("/datasets", this.get.handleGetDataset.bind(this.get));
 		this.express.delete("/dataset/:id", this.delete.handleDeleteDataset.bind(this.delete));
-//		this.express.options("/", cors());
+		this.express.options("/", cors());
 		this.express.get("/hello", this.get.handleResult.bind(this.get));
 
 	}

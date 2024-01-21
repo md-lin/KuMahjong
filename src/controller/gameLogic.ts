@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Tile, { ITile } from "../models/tile";
 import {
   updateTile,
@@ -10,7 +11,7 @@ import { connect } from "mongoose";
 
 import { connectMongo, connectedToMongo } from "../database";
 
-class GameLogic {
+export class GameLogic {
   userIDs: string[];
   currentPlayer: string;
   currentPlayerIndex: number = -1;
