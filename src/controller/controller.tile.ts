@@ -18,8 +18,8 @@ export async function createTile (
         tileType: tile.tileType,
         tileNum: tile.tileNum,
         id: tile.id,
-        visibility?: tile.visibility,
-        hand?: tile.hand
+        visibility: tile.visibility,
+        hand: tile.hand
     }).save({session});
 
     if (result) {
