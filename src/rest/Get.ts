@@ -34,7 +34,8 @@ export class Get {
 
 	public async handleDiscard(req: Request, res: Response) {
 		try {
-			const result = {hello: "yer"};
+			const id: string = req.params.id;
+			const result = this.gameLogic.discard(id);
 			res.status(200).json({result: result});
 		} catch (error) {
 			// this should never reject
