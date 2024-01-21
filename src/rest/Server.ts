@@ -124,6 +124,7 @@ export default class Server {
 		this.express.delete("/dataset/:id", this.delete.handleDeleteDataset.bind(this.delete));
 		// this.express.options("/", cors());
 		this.express.get("/hello", this.get.handleResult.bind(this.get));
+		this.express.get("/discard/:id", this.get.handleDiscard.bind(this.get));
 
 	}
 
