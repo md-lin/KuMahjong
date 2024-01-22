@@ -2,10 +2,6 @@ import express, {Application, Request, Response} from "express";
 // import cors from "cors";
 import * as http from "http";
 import {Echo} from "./Echo";
-import {Post} from "./Post";
-import {Put} from "./Put";
-import InsightFacade from "../../src/controller/InsightFacade";
-import {Delete} from "./Delete";
 import {Get} from "./Get";
 // import cors from "cors";
 import {GameLogic} from "../controller/gameLogic";
@@ -14,10 +10,6 @@ export default class Server {
 	private readonly port: number;
 	private express: Application;
 	private server: http.Server | undefined;
-	private insightFacade: InsightFacade;
-	private put: Put;
-	private post: Post;
-	private delete: Delete;
 	private get: Get;
 	private gameLogic: GameLogic;
 
@@ -25,14 +17,10 @@ export default class Server {
 		console.info(`Server::<init>( ${port} )`);
 		this.port = port;
 		this.express = express();
-		this.insightFacade = new InsightFacade();
-		this.put = new Put(this.insightFacade);
-		this.post = new Post(this.insightFacade);
-		this.delete = new Delete(this.insightFacade);
 
 		// CHANGED LINES
 		this.gameLogic = new GameLogic(["0", "1", "2", "3"]);
-		this.get = new Get(this.insightFacade, this.gameLogic);
+		this.get = new Get(this.gameLogic);
 
 
 		// this.registerMiddleware();
@@ -118,11 +106,7 @@ export default class Server {
 		// http://localhost:4321/echo/hello
 		this.express.get("/echo/:msg", Echo.echo);
 
-		this.express.put("/dataset/:id/:kind", this.put.handlePutDataset.bind(this.put));
-		this.express.post("/query", this.post.post.bind(this.post));
-		this.express.get("/datasets", this.get.handleGetDataset.bind(this.get));
-		this.express.delete("/dataset/:id", this.delete.handleDeleteDataset.bind(this.delete));
-		this.express.options("/", cors());
+		// this.express.options("/", cors());
 		this.express.get("/hello", this.get.handleResult.bind(this.get));
 		this.express.get("/discard/:id", this.get.handleDiscard.bind(this.get));
 
